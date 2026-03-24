@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>MLA ICC — Suite v3</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c12;--s1:#14141e;--s2:#1c1c2a;--s3:#242436;
+  --bd:#2a2a3e;--bd2:#363650;
+  --ac:#7c6af7;--a2:#10d9a0;--a3:#f4a318;--a4:#e05a7a;--a5:#5ba4f5;
+  --tx:#eeeeff;--t2:#9b97b8;--t3:#5c597a;
+  --S:#a78bfa;--A:#10d9a0;--T:#5ba4f5;--B:#f4a318;
+  --r:10px;--r2:14px;--r3:20px;
+  --f:'DM Sans',sans-serif;--m:'DM Mono',monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow:hidden;}
+body{font-family:var(--f);background:var(--bg);color:var(--tx);display:flex;flex-direction:column;}
+
+/* ── OVERLAY ── */
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.88);display:flex;align-items:center;justify-content:center;z-index:500;backdrop-filter:blur(8px);}
+.mo{background:var(--s1);border:1px solid var(--bd2);border-radius:var(--r3);padding:24px;width:min(520px,96vw);max-height:94vh;overflow-y:auto;}
+.mo h2{font-size:1.15rem;font-weight:700;margin-bottom:3px;}
+.mo p{font-size:.78rem;color:var(--t2);margin-bottom:16px;}
+.rg{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:16px;}
+@media(max-width:420px){.rg{grid-template-columns:1fr 1fr;}}
+.rb{padding:11px 5px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);cursor:pointer;font-family:var(--f);text-align:center;transition:all .18s;}
+.rb:hover{border-color:var(--ac);}
+.rb.on{border-color:var(--ac);background:#7c6af718;}
+.ri{font-size:1.35rem;margin-bottom:3px;}
+.rn{font-size:.7rem;font-weight:600;line-height:1.2;}
+.cdisp{text-align:center;font-family:var(--m);font-size:2rem;font-weight:700;letter-spacing:.18em;color:var(--ac);background:var(--s2);padding:13px;border-radius:var(--r);margin:11px 0;border:1px solid var(--bd);}
+
+/* ── HEADER ── */
+.hdr{background:var(--s1);border-bottom:1px solid var(--bd);padding:9px 15px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.hbr{font-size:1.05rem;font-weight:700;letter-spacing:-.02em;}
+.hsu{font-size:.62rem;color:var(--ac);font-weight:600;letter-spacing:.08em;text-transform:uppercase;margin-left:7px;}
+.hr{display:flex;align-items:center;gap:6px;}
+.sp{display:flex;align-items:center;gap:5px;background:var(--s2);border:1px solid var(--bd);padding:4px 9px;border-radius:50px;font-size:.72rem;color:var(--t2);}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--a4);flex-shrink:0;transition:background .3s;}
+.dot.live{background:var(--a2);animation:blink 2s infinite;}
+.rpl{padding:4px 9px;border-radius:50px;font-size:.72rem;font-weight:600;background:#7c6af720;color:var(--ac);}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.35}}
+
+/* ── NAV ── */
+.nav{display:flex;gap:1px;padding:6px 10px;background:var(--s1);border-bottom:1px solid var(--bd);overflow-x:auto;scrollbar-width:none;flex-shrink:0;}
+.nav::-webkit-scrollbar{display:none;}
+.nb{display:flex;align-items:center;gap:5px;padding:7px 13px;border-radius:50px;border:none;cursor:pointer;font-family:var(--f);font-size:.78rem;font-weight:500;background:transparent;color:var(--t2);white-space:nowrap;transition:all .18s;position:relative;}
+.nb:hover{color:var(--tx);background:var(--s2);}
+.nb.ac{background:var(--ac);color:#fff;}
+.nbd{position:absolute;top:2px;right:4px;width:7px;height:7px;border-radius:50%;background:var(--a4);display:none;border:1.5px solid var(--s1);}
+
+/* ── PANELS ── */
+.panels{flex:1;overflow-y:auto;overflow-x:hidden;}
+.pnl{display:none;padding:14px;max-width:960px;margin:0 auto;}
+.pnl.ac{display:block;}
+
+/* ── CARDS ── */
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:15px;margin-bottom:11px;}
+.card.cS{border-color:#a78bfa35;} .card.cA{border-color:#10d9a035;}
+.card.cB{border-color:#f4a31835;} .card.cR{border-color:#e05a7a35;}
+.clb{font-size:.63rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:9px;}
+
+/* ── BTNS ── */
+.btn{display:inline-flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--r);border:none;cursor:pointer;font-family:var(--f);font-size:.83rem;font-weight:500;transition:all .16s;}
+.btn:hover{filter:brightness(1.12);transform:translateY(-1px);}
+.btn:active{transform:scale(.96);}
+.bp{background:var(--ac);color:#fff;} .bs{background:var(--a2);color:#071a10;}
+.bd_{background:var(--a4);color:#fff;} .ba{background:var(--a3);color:#1a0c00;}
+.bg_{background:var(--s2);color:var(--tx);border:1px solid var(--bd);}
+.bsm{padding:5px 11px;font-size:.76rem;} .bfull{width:100%;justify-content:center;}
+.br_{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px;}
+
+/* ── FORMS ── */
+input,select,textarea{width:100%;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:8px 11px;color:var(--tx);font-family:var(--f);font-size:.83rem;transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--ac);}
+select option{background:var(--s2);}
+label{display:block;font-size:.74rem;color:var(--t2);margin-bottom:3px;font-weight:500;}
+.fg{margin-bottom:10px;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:9px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px;}
+@media(max-width:560px){.g2,.g3{grid-template-columns:1fr;}}
+
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;padding:2px 8px;border-radius:50px;font-size:.68rem;font-weight:600;}
+.tg{background:#10d9a018;color:var(--a2);border:1px solid #10d9a030;}
+.ta{background:#f4a31818;color:var(--a3);border:1px solid #f4a31830;}
+.tp{background:#7c6af718;color:var(--ac);border:1px solid #7c6af730;}
+.tb{background:#5ba4f518;color:var(--a5);border:1px solid #5ba4f530;}
+.tr{background:#e05a7a18;color:var(--a4);border:1px solid #e05a7a30;}
+
+/* ── QUICK MSGS ── */
+.qw{display:flex;flex-wrap:wrap;gap:6px;margin:9px 0;}
+.qm{padding:8px 12px;border-radius:50px;border:1px solid var(--bd);background:var(--s2);color:var(--tx);font-family:var(--f);font-size:.78rem;cursor:pointer;transition:all .16s;font-weight:500;}
+.qm:hover{background:var(--ac);border-color:var(--ac);color:#fff;}
+.qm:active{transform:scale(.94);}
+.qu{border-color:#e05a7a50;color:var(--a4);} .qu:hover{background:var(--a4);border-color:var(--a4);color:#fff;}
+.qo{border-color:#10d9a050;color:var(--a2);} .qo:hover{background:var(--a2);border-color:var(--a2);color:#071a10;}
+
+/* ── CHAT ── */
+.cbx{background:var(--s2);border-radius:var(--r2);border:1px solid var(--bd);padding:12px;height:200px;overflow-y:auto;margin-bottom:8px;display:flex;flex-direction:column;gap:6px;}
+.cm{padding:7px 10px;border-radius:11px;font-size:.78rem;max-width:82%;line-height:1.4;}
+.cm.sent{background:var(--ac);color:#fff;align-self:flex-end;border-radius:13px 13px 3px 13px;}
+.cm.recv{background:var(--s3);color:var(--tx);align-self:flex-start;border-radius:13px 13px 13px 3px;border:1px solid var(--bd);}
+.cm .ct{font-size:.63rem;opacity:.5;margin-top:2px;}
+.cirow{display:flex;gap:6px;} .cirow input{flex:1;}
+
+/* ── CHORD DISPLAY ── */
+.chbig{text-align:center;padding:20px 15px;background:linear-gradient(135deg,#7c6af712,#10d9a008);border-radius:var(--r2);border:1px solid var(--bd);margin:11px 0;}
+.chn{font-size:3.8rem;font-weight:700;font-family:var(--m);color:var(--ac);letter-spacing:-.03em;line-height:1;}
+.chs{font-size:.83rem;color:var(--t2);margin-top:5px;font-family:var(--m);}
+
+/* P2 BIG DISPLAY */
+.p2big{background:var(--s2);border-radius:var(--r2);padding:28px 20px;text-align:center;border:3px solid var(--bd);margin:11px 0;transition:border-color .3s;}
+.p2big.on{border-color:var(--ac);box-shadow:0 0 30px #7c6af725;}
+.p2chord{font-size:6rem;font-weight:700;color:var(--ac);font-family:var(--m);line-height:1;transition:all .3s;}
+.p2notes{font-size:.95rem;color:var(--t2);margin-top:8px;font-family:var(--m);}
+.p2bass{font-size:1.5rem;font-weight:700;color:var(--B);margin-top:6px;font-family:var(--m);}
+.p2key{font-size:.85rem;color:var(--a2);margin-top:4px;font-family:var(--m);}
+
+/* ── MIDI STATS ── */
+.mst{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:11px;}
+.msc{background:var(--s2);border-radius:var(--r);padding:10px;text-align:center;border:1px solid var(--bd);}
+.msv{font-size:1.5rem;font-weight:700;font-family:var(--m);}
+.msl{font-size:.6rem;color:var(--t3);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;}
+.msv.ky{color:var(--a3);} .msv.bp{color:var(--a2);} .msv.nt{color:var(--ac);}
+
+/* Piano */
+.pw{overflow-x:auto;padding:7px;background:var(--s2);border-radius:var(--r);border:1px solid var(--bd);margin-bottom:10px;}
+
+/* Progression */
+.prow{display:flex;flex-wrap:wrap;gap:5px;margin:8px 0;min-height:40px;}
+.pp{padding:5px 10px;border-radius:7px;background:var(--s3);border:1px solid var(--bd);font-family:var(--m);font-size:.78rem;display:flex;flex-direction:column;align-items:center;gap:1px;cursor:pointer;transition:all .18s;}
+.pp:hover{border-color:var(--ac);}
+.pp.cur{border-color:var(--ac);background:#7c6af720;}
+.ppn{font-size:.92rem;font-weight:700;color:var(--ac);}
+
+/* SATB SHEET */
+.vcards{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:12px;}
+@media(max-width:480px){.vcards{grid-template-columns:1fr 1fr;}}
+.vc{border-radius:var(--r2);padding:11px;text-align:center;border:2px solid transparent;cursor:pointer;transition:all .18s;user-select:none;}
+.vc.S{background:#a78bfa10;border-color:#a78bfa25;} .vc.A{background:#10d9a010;border-color:#10d9a025;}
+.vc.T{background:#5ba4f510;border-color:#5ba4f525;} .vc.B{background:#f4a31810;border-color:#f4a31825;}
+.vc.on.S{background:#a78bfa22;border-color:var(--S);} .vc.on.A{background:#10d9a022;border-color:var(--A);}
+.vc.on.T{background:#5ba4f522;border-color:var(--T);} .vc.on.B{background:#f4a31822;border-color:var(--B);}
+.vl{font-size:1.7rem;font-weight:700;}
+.vc.S .vl{color:var(--S);} .vc.A .vl{color:var(--A);} .vc.T .vl{color:var(--T);} .vc.B .vl{color:var(--B);}
+.vr{font-size:.66rem;color:var(--t2);} .vn{font-size:.78rem;font-weight:500;margin-top:2px;}
+
+.ssheet{background:var(--s2);border-radius:var(--r2);padding:14px;overflow-x:auto;font-family:var(--m);}
+.ssec{margin-bottom:18px;}
+.ssecl{font-size:.62rem;letter-spacing:.12em;text-transform:uppercase;color:var(--t3);margin-bottom:7px;padding-bottom:4px;border-bottom:1px solid var(--bd);}
+.svrow{display:flex;align-items:center;margin-bottom:2px;}
+.svl_{width:18px;font-size:.62rem;font-weight:700;flex-shrink:0;margin-right:4px;}
+.svl_.S{color:var(--S);} .svl_.A{color:var(--A);} .svl_.T{color:var(--T);} .svl_.B{color:var(--B);}
+.svc{min-width:34px;height:26px;display:flex;align-items:center;justify-content:center;border:1px solid var(--bd);border-right:none;font-size:.7rem;font-weight:600;flex-shrink:0;}
+.svc:last-of-type{border-right:1px solid var(--bd);}
+.svc.S{background:#a78bfa18;color:var(--S);} .svc.A{background:#10d9a018;color:var(--A);}
+.svc.T{background:#5ba4f518;color:var(--T);} .svc.B{background:#f4a31818;color:var(--B);}
+.schrow{display:flex;padding-left:22px;margin-bottom:2px;}
+.sch{min-width:34px;font-size:.68rem;font-weight:700;color:var(--ac);font-family:var(--m);}
+.slrow{display:flex;padding-left:22px;margin-bottom:6px;}
+.sly{min-width:34px;font-size:.64rem;color:var(--t2);text-align:center;word-break:break-word;line-height:1.2;padding:0 1px;}
+
+/* PROGRAMME */
+.pev{background:var(--s1);border:1px solid var(--bd);border-radius:var(--r2);padding:13px;margin-bottom:9px;}
+.pehd{display:flex;align-items:flex-start;justify-content:space-between;gap:7px;margin-bottom:8px;}
+.pedt{font-size:.9rem;font-weight:700;color:var(--ac);}
+.peth{font-size:.75rem;color:var(--t2);margin-top:1px;}
+.pemeta{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:7px;}
+.srow{display:flex;align-items:center;gap:7px;padding:7px 9px;border-radius:var(--r);border:1px solid var(--bd);background:var(--s2);}
+.snum{width:20px;height:20px;border-radius:50%;background:var(--ac);color:#fff;display:flex;align-items:center;justify-content:center;font-size:.65rem;font-weight:700;flex-shrink:0;}
+.sinfo{flex:1;} .sname{font-size:.85rem;font-weight:500;} .smeta{font-size:.7rem;color:var(--t2);margin-top:1px;display:flex;gap:5px;}
+
+/* CONN STATUS */
+.liind{display:flex;align-items:center;gap:5px;padding:4px 10px;background:var(--s2);border-radius:50px;border:1px solid var(--bd);font-size:.72rem;color:var(--t2);width:fit-content;}
+.urlbx{background:var(--s2);padding:8px 11px;border-radius:var(--r);font-family:var(--m);font-size:.68rem;color:var(--ac);word-break:break-all;border:1px solid var(--bd);}
+
+/* MISC */
+.div{height:1px;background:var(--bd);margin:10px 0;}
+.row{display:flex;align-items:center;gap:7px;} .rb2{display:flex;align-items:center;justify-content:space-between;gap:7px;}
+.mt8{margin-top:8px;} .mt14{margin-top:14px;}
+.shd{margin-bottom:12px;} .shd h2{font-size:1.1rem;font-weight:700;} .shd p{font-size:.76rem;color:var(--t2);margin-top:1px;}
+.empty{text-align:center;padding:28px;color:var(--t3);font-size:.83rem;}
+
+/* ALERT */
+.abn{position:fixed;bottom:14px;right:14px;z-index:999;background:var(--s2);border:1px solid var(--ac);border-radius:var(--r2);padding:10px 14px;font-size:.8rem;max-width:260px;transform:translateY(120px);opacity:0;transition:all .28s;box-shadow:0 8px 32px rgba(0,0,0,.5);}
+.abn.show{transform:translateY(0);opacity:1;} .abn.ok{border-color:var(--a2);} .abn.err{border-color:var(--a4);}
+
+/* CHANT EN COURS banner */
+.cur-song{background:linear-gradient(90deg,#7c6af720,#10d9a010);border:1px solid #7c6af740;border-radius:var(--r);padding:10px 14px;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;gap:8px;}
+.cs-title{font-weight:700;font-size:.95rem;}
+.cs-key{font-family:var(--m);color:var(--ac);font-size:.85rem;}
+.cs-trans{font-size:.72rem;color:var(--a3);font-family:var(--m);}
+</style>
+</head>
+<body>
+
+<!-- ═══ OVERLAY ═══ -->
+<div class="ov" id="OV">
+<div class="mo">
+  <h2>🎹 MLA ICC — Suite v3</h2>
+  <p>Choisis ton rôle. Partage le code à ton équipe. Communication temps réel via Firebase.</p>
+  <div class="rg">
+    <div class="rb on" data-r="chef" onclick="selR(this)"><div class="ri">🎹</div><div class="rn">Chef/Pianiste 1</div></div>
+    <div class="rb" data-r="pianiste2" onclick="selR(this)"><div class="ri">🎼</div><div class="rn">Pianiste 2</div></div>
+    <div class="rb" data-r="son" onclick="selR(this)"><div class="ri">🎚️</div><div class="rn">Ingénieur Son</div></div>
+    <div class="rb" data-r="moderatrice" onclick="selR(this)"><div class="ri">🎤</div><div class="rn">Modératrice</div></div>
+    <div class="rb" data-r="pasteur" onclick="selR(this)"><div class="ri">✝️</div><div class="rn">Pasteur</div></div>
+    <div class="rb" data-r="lead" onclick="selR(this)"><div class="ri">🎙️</div><div class="rn">Lead Vocal</div></div>
+    <div class="rb" data-r="batteur" onclick="selR(this)"><div class="ri">🥁</div><div class="rn">Batteur</div></div>
+    <div class="rb" data-r="bassiste" onclick="selR(this)"><div class="ri">🎸</div><div class="rn">Bassiste</div></div>
+    <div class="rb" data-r="soprano" onclick="selR(this)"><div class="ri">🎵</div><div class="rn">Soprano</div></div>
+    <div class="rb" data-r="alto" onclick="selR(this)"><div class="ri">🎵</div><div class="rn">Alto</div></div>
+    <div class="rb" data-r="tenor" onclick="selR(this)"><div class="ri">🎵</div><div class="rn">Ténor</div></div>
+    <div class="rb" data-r="basse" onclick="selR(this)"><div class="ri">🎵</div><div class="rn">Basse chorale</div></div>
+    <div class="rb" data-r="accueil" onclick="selR(this)"><div class="ri">👋</div><div class="rn">Accueil</div></div>
+    <div class="rb" data-r="protocole" onclick="selR(this)"><div class="ri">📋</div><div class="rn">Protocole</div></div>
+  </div>
+  <div class="fg">
+    <label>Code de session (partage ce code à l'équipe)</label>
+    <div class="cdisp" id="CD">MLA-0000</div>
+    <div class="row" style="gap:6px;margin-top:6px;">
+      <input id="CI" placeholder="Ou entre un code existant…" style="flex:1;">
+      <button class="btn bg_ bsm" onclick="newCode()">🔄</button>
+    </div>
+  </div>
+  <div class="fg" id="fbStatus" style="font-size:.75rem;color:var(--t2);padding:7px 11px;background:var(--s2);border-radius:var(--r);border:1px solid var(--bd);">
+    🔄 Connexion Firebase…
+  </div>
+  <button class="btn bp bfull" style="margin-top:10px;" onclick="joinSess()">Rejoindre la session →</button>
+</div>
+</div>
+
+<!-- ═══ HEADER ═══ -->
+<div class="hdr">
+  <div class="row"><span class="hbr">MLA</span><span class="hsu">ICC · Genève</span></div>
+  <div class="hr">
+    <div class="sp"><div class="dot" id="HD"></div><span id="HC">---</span></div>
+    <div class="rpl" id="HR">—</div>
+    <button class="btn bg_ bsm" onclick="document.getElementById('OV').style.display='flex'">⚙️</button>
+  </div>
+</div>
+
+<!-- ═══ NAV ═══ -->
+<div class="nav" id="NAV">
+  <button class="nb ac" data-p="prog" onclick="goP('prog',this)">📅 Programme</button>
+  <button class="nb" data-p="satb" onclick="goP('satb',this)">🎵 SATB</button>
+  <button class="nb" data-p="midi" onclick="goP('midi',this)">🎹 MIDI Live</button>
+  <button class="nb" data-p="comm" onclick="goP('comm',this)">💬 Comm<div class="nbd" id="nd-comm"></div></button>
+</div>
+
+<!-- ═══ PANELS ═══ -->
+<div class="panels">
+
+<!-- PROGRAMME -->
+<div class="pnl ac" id="pnl-prog">
+  <div class="rb2 shd">
+    <div><h2>Programme des cultes</h2><p>Mensuel · Toutes activités MLA-ICC</p></div>
+    <button class="btn bp bsm" onclick="togEF()">+ Ajouter</button>
+  </div>
+  <div class="card" id="EF" style="display:none;border-color:#7c6af740;">
+    <div class="clb">Nouvel événement</div>
+    <div class="g2">
+      <div class="fg"><label>Date</label><input type="date" id="eD"></div>
+      <div class="fg"><label>Type</label>
+        <select id="eT">
+          <option value="culte">Culte dominical</option>
+          <option value="veillee">Veillée de prière</option>
+          <option value="jeunes">Réunion Jeunes</option>
+          <option value="evang">Évangélisation</option>
+          <option value="special">Service spécial</option>
+        </select>
+      </div>
+    </div>
+    <div class="g2">
+      <div class="fg"><label>Thème</label><input id="eTh" placeholder="ex: Adoration et Louange"></div>
+      <div class="fg"><label>Salle / Lieu</label><input id="eSa" placeholder="ex: Grande salle"></div>
+    </div>
+    <div class="g3">
+      <div class="fg"><label>Heure</label><input type="time" id="eH" value="10:00"></div>
+      <div class="fg"><label>Conducteur</label><input id="eCo" placeholder="Prénom"></div>
+      <div class="fg"><label>Réf. biblique</label><input id="eRe" placeholder="ex: Ps 150"></div>
+    </div>
+    <div class="fg"><label>Rôles assignés</label><input id="eRo" placeholder="Piano: X · Accueil: Y · Lead: Z · Chantres: …"></div>
+    <div class="br_">
+      <button class="btn bs bsm" onclick="saveEv()">✓ Enregistrer</button>
+      <button class="btn bg_ bsm" onclick="togEF()">Annuler</button>
+    </div>
+  </div>
+  <div id="EL"><div class="empty">📅 Aucun programme. Crée une date.</div></div>
+</div>
+
+<!-- SATB -->
+<div class="pnl" id="pnl-satb">
+  <div class="rb2 shd"><div><h2>Grille SATB</h2><p>Notation américaine · Do (C) · Voix clicables</p></div></div>
+
+  <!-- Chant en cours -->
+  <div class="cur-song" id="curSongBar" style="display:none;">
+    <div><div class="cs-title" id="csTitle">—</div><div class="cs-trans" id="csTrans"></div></div>
+    <div class="cs-key" id="csKey">C</div>
+  </div>
+
+  <!-- Switch accord / SATB -->
+  <div class="row" style="gap:8px;margin-bottom:11px;flex-wrap:wrap;">
+    <button class="btn bp bsm" id="swAccord" onclick="swMode('accord')">🎵 Accords</button>
+    <button class="btn bg_ bsm" id="swSatb" onclick="swMode('satb')">🎼 SATB</button>
+    <div style="flex:1;"></div>
+    <!-- Transposition -->
+    <div class="row" style="gap:4px;background:var(--s2);border:1px solid var(--bd);border-radius:var(--r);padding:4px 8px;">
+      <button class="btn bg_ bsm" style="padding:3px 8px;" onclick="adjTrans(-1)">−</button>
+      <span style="font-family:var(--m);font-size:.8rem;min-width:52px;text-align:center;" id="transDisplay">0 (Do)</span>
+      <button class="btn bg_ bsm" style="padding:3px 8px;" onclick="adjTrans(+1)">+</button>
+    </div>
+  </div>
+
+  <div class="vcards">
+    <div class="vc S on" data-v="S" onclick="togV('S')"><div class="vl">S</div><div class="vn">Soprano</div><div class="vr">C4–G5</div></div>
+    <div class="vc A on" data-v="A" onclick="togV('A')"><div class="vl">A</div><div class="vn">Alto</div><div class="vr">G3–D5</div></div>
+    <div class="vc T on" data-v="T" onclick="togV('T')"><div class="vl">T</div><div class="vn">Ténor</div><div class="vr">C3–A4</div></div>
+    <div class="vc B on" data-v="B" onclick="togV('B')"><div class="vl">B</div><div class="vn">Basse</div><div class="vr">E2–C4</div></div>
+  </div>
+
+  <div class="chbig" id="sBig">
+    <div class="chn" id="sChn">C</div>
+    <div class="chs" id="sChs">C — E — G</div>
+    <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:9px;" id="sVN"></div>
+  </div>
+
+  <div class="card">
+    <div class="clb">Chant</div>
+    <div class="g2">
+      <div class="fg"><label>Titre</label><input id="sT" placeholder="Titre du chant"></div>
+      <div class="fg"><label>Bibliothèque</label>
+        <select id="sLib" onchange="loadLib()">
+          <option value="">— Choisir —</option>
+          <option value="assurance">J'ai l'assurance</option>
+          <option value="amazing">Amazing Grace</option>
+          <option value="gloire">À toi la gloire</option>
+        </select>
+      </div>
+    </div>
+    <div class="fg"><label>Structure (Couplet 1: C F G C | Refrain: F C G Am)</label>
+      <textarea id="sIn" rows="3" placeholder="Couplet 1: C F G C | Refrain: F C G Am | Pont: Am F C G"></textarea>
+    </div>
+    <div class="fg"><label>Paroles (mot par mot, calées sur les accords, séparées par |)</label>
+      <textarea id="sLy" rows="3" placeholder="J'ai l'as- su- ran- ce | C'est mon his- toi- re | …"></textarea>
+    </div>
+    <div class="br_">
+      <button class="btn bp bsm" onclick="buildSheet()">🎼 Générer</button>
+      <button class="btn bg_ bsm" onclick="announceChant()">📢 Annoncer à tous</button>
+    </div>
+  </div>
+  <div class="ssheet" id="sSheet" style="display:none;"></div>
+</div>
+
+<!-- MIDI LIVE -->
+<div class="pnl" id="pnl-midi">
+  <div class="rb2 shd">
+    <div><h2>MIDI Live</h2><p>WebMIDI · Chrome · Genos / PSR</p></div>
+    <div class="liind"><div class="dot" id="mDot"></div><span id="mSt">Déconnecté</span></div>
+  </div>
+  <div class="card">
+    <div class="clb">Port MIDI</div>
+    <div class="row" style="gap:6px;flex-wrap:wrap;">
+      <select id="mPort" style="flex:1;min-width:150px;"><option>Sélectionner…</option></select>
+      <button class="btn bs bsm" onclick="initMIDI()">🔌 Connecter</button>
+      <button class="btn ba bsm" id="recBtn" onclick="togRec()">▶ Play</button>
+      <button class="btn bd_ bsm" onclick="resetMIDI()">↺ Reset</button>
+    </div>
+  </div>
+  <div class="mst">
+    <div class="msc"><div class="msv ky" id="mK">—</div><div class="msl">Tonalité</div></div>
+    <div class="msc"><div class="msv bp" id="mBpm">—</div><div class="msl">BPM</div></div>
+    <div class="msc"><div class="msv nt" id="mN">0</div><div class="msl">Notes</div></div>
+  </div>
+  <!-- CHORD STREAM (also visible to P2) -->
+  <div class="p2big" id="mCS">
+    <div class="p2chord" id="mCM">—</div>
+    <div class="p2notes" id="mCSS">En attente de notes…</div>
+    <div class="p2bass" id="mBass"></div>
+    <div class="p2key" id="mKeyLine"></div>
+  </div>
+  <div class="pw"><canvas id="PC" width="760" height="82"></canvas></div>
+  <div class="card">
+    <div class="clb" style="display:flex;justify-content:space-between;"><span>Progression</span><span id="pCnt" style="color:var(--t3);">0 accords</span></div>
+    <div class="prow" id="pRow"><span style="color:var(--t3);font-size:.78rem;">Appuie sur Play pour enregistrer</span></div>
+  </div>
+  <div class="card cS">
+    <div class="clb">Diffuser au Pianiste 2 (Firebase)</div>
+    <div class="row" style="gap:7px;flex-wrap:wrap;">
+      <button class="btn bp bsm" onclick="broadcastCh()">📡 Diffuser accord actuel</button>
+      <div class="tag tp" id="bSt">Non diffusé</div>
+    </div>
+  </div>
+</div>
+
+<!-- COMM -->
+<div class="pnl" id="pnl-comm">
+  <div class="rb2 shd"><div><h2>Communication</h2><p>Temps réel · Firebase · Tap-to-send</p></div></div>
+
+  <!-- Chant en cours (tous voient ça) -->
+  <div class="cur-song" id="curSongComm" style="display:none;">
+    <div><div style="font-size:.7rem;color:var(--t2);margin-bottom:2px;">CHANT EN COURS</div>
+      <div class="cs-title" id="cscTitle">—</div></div>
+    <div><div class="cs-key" id="cscKey">C</div><div class="cs-trans" id="cscTrans"></div></div>
+  </div>
+
+  <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px;" id="CT">
+    <button class="btn bp bsm" onclick="showCh('p2',this)">🎼 Pianiste 2</button>
+    <button class="btn bg_ bsm" onclick="showCh('son',this)">🎚️ Son</button>
+    <button class="btn bg_ bsm" onclick="showCh('mod',this)">🎤 Modératrice</button>
+    <button class="btn bg_ bsm" onclick="showCh('past',this)">✝️ Pasteur</button>
+    <button class="btn bg_ bsm" onclick="showCh('all',this)">📢 Tous</button>
+  </div>
+
+  <!-- P2 -->
+  <div id="ch-p2">
+    <div class="card cS">
+      <div class="clb">Accord en cours — Pianiste 2 le voit en direct</div>
+      <div class="p2big" id="p2S"><div class="p2chord" id="p2M">—</div><div class="p2notes" id="p2SS">En attente…</div><div class="p2bass" id="p2Bass"></div><div class="p2key" id="p2Key"></div></div>
+      <div class="clb mt8">Lien URL pour Pianiste 2</div>
+      <div class="urlbx" id="p2URL">—</div>
+      <div class="br_">
+        <button class="btn bg_ bsm" onclick="cpURL('pianiste2')">📋 Copier</button>
+        <button class="btn bg_ bsm" onclick="shURL('pianiste2')">📤 Partager</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="clb">Messages rapides</div>
+      <div class="qw" id="qp2"></div>
+      <div class="div"></div>
+      <div class="clb">Chat</div>
+      <div class="cbx" id="cb-p2"></div>
+      <div class="cirow">
+        <input id="ci-p2" placeholder="Message au Pianiste 2…" onkeypress="if(event.key==='Enter')sndMsg('p2')">
+        <button class="btn bp bsm" onclick="sndMsg('p2')">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SON -->
+  <div id="ch-son" style="display:none;">
+    <div class="card cB">
+      <div class="clb">Lien Ingénieur Son</div>
+      <div class="urlbx" id="sonURL">—</div>
+      <div class="br_">
+        <button class="btn ba bsm" onclick="cpURL('son')">📋 Copier</button>
+        <button class="btn bg_ bsm" onclick="shURL('son')">📤 Partager</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="clb">Messages rapides</div>
+      <div class="qw" id="qson"></div>
+      <div class="div"></div>
+      <div class="cbx" id="cb-son"></div>
+      <div class="cirow">
+        <input id="ci-son" placeholder="Message à l'ingénieur son…" onkeypress="if(event.key==='Enter')sndMsg('son')">
+        <button class="btn bp bsm" onclick="sndMsg('son')">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOD -->
+  <div id="ch-mod" style="display:none;">
+    <div class="card cA">
+      <div class="clb">Lien Modératrice</div>
+      <div class="urlbx" id="modURL">—</div>
+      <div class="br_">
+        <button class="btn bs bsm" onclick="cpURL('moderatrice')">📋 Copier</button>
+        <button class="btn bg_ bsm" onclick="shURL('moderatrice')">📤 Partager</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="clb">Messages rapides</div>
+      <div class="qw" id="qmod"></div>
+      <div class="div"></div>
+      <div class="cbx" id="cb-mod"></div>
+      <div class="cirow">
+        <input id="ci-mod" placeholder="Message à la modératrice…" onkeypress="if(event.key==='Enter')sndMsg('mod')">
+        <button class="btn bp bsm" onclick="sndMsg('mod')">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- PASTEUR -->
+  <div id="ch-past" style="display:none;">
+    <div class="card">
+      <div class="clb">Messages rapides — Pasteur</div>
+      <div class="qw" id="qpast"></div>
+      <div class="div"></div>
+      <div class="cbx" id="cb-past"></div>
+      <div class="cirow">
+        <input id="ci-past" placeholder="Message au Pasteur…" onkeypress="if(event.key==='Enter')sndMsg('past')">
+        <button class="btn bp bsm" onclick="sndMsg('past')">→</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOUS -->
+  <div id="ch-all" style="display:none;">
+    <div class="card cR">
+      <div class="clb">📢 Diffusion générale — tous rôles</div>
+      <div class="qw" id="qall"></div>
+      <div class="div"></div>
+      <div class="cbx" id="cb-all"></div>
+      <div class="cirow">
+        <input id="ci-all" placeholder="Message à tous…" onkeypress="if(event.key==='Enter')sndMsg('all')">
+        <button class="btn bd_ bsm" onclick="sndMsg('all')">📢 Envoyer</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /panels -->
+
+<div class="abn" id="AB"></div>
+
+<!-- ═══ FIREBASE SDK ═══ -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue, push, serverTimestamp, onChildAdded, get }
+  from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const FC = {
+  apiKey: "AIzaSyBIPgJ52SCDInGXANe3xwP3rNApyUUnQq4",
+  authDomain: "mla-icc.firebaseapp.com",
+  databaseURL: "https://mla-icc-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "mla-icc",
+  storageBucket: "mla-icc.firebasestorage.app",
+  messagingSenderId: "960021631777",
+  appId: "1:960021631777:web:bcf9323e12268f492e6460"
+};
+
+let app_, db_, sessRef_, chordRef_, songRef_, fbReady=false;
+
+try {
+  app_ = initializeApp(FC);
+  db_ = getDatabase(app_);
+  fbReady = true;
+  document.getElementById('fbStatus').textContent = '✅ Firebase connecté (europe-west1)';
+  document.getElementById('fbStatus').style.color = 'var(--a2)';
+} catch(e) {
+  document.getElementById('fbStatus').textContent = '❌ Erreur Firebase: ' + e.message;
+  document.getElementById('fbStatus').style.color = 'var(--a4)';
+}
+
+// Expose Firebase API to global scope
+window._fb = {
+  ready: () => fbReady,
+  db: () => db_,
+  ref, set, onValue, push, serverTimestamp, onChildAdded, get,
+  initSession(code) {
+    sessRef_ = ref(db_, 'sessions/' + code);
+    chordRef_ = ref(db_, 'sessions/' + code + '/chord');
+    songRef_  = ref(db_, 'sessions/' + code + '/song');
+    // Listen for chord updates
+    onValue(chordRef_, snap => {
+      const d = snap.val();
+      if (d && d.name) window._onRemoteChord(d);
+    });
+    // Listen for song announcements
+    onValue(songRef_, snap => {
+      const d = snap.val();
+      if (d) window._onRemoteSong(d);
+    });
+    // Listen for messages per channel
+    ['p2','son','mod','past','all'].forEach(ch => {
+      const msgRef = ref(db_, 'sessions/' + code + '/msgs/' + ch);
+      onChildAdded(msgRef, snap => {
+        const m = snap.val();
+        if (m) window._onRemoteMsg(ch, m);
+      });
+    });
+  },
+  sendChord(code, data) {
+    if (!fbReady) return;
+    set(ref(db_, 'sessions/' + code + '/chord'), { ...data, ts: Date.now() });
+  },
+  sendSong(code, data) {
+    if (!fbReady) return;
+    set(ref(db_, 'sessions/' + code + '/song'), { ...data, ts: Date.now() });
+  },
+  sendMsg(code, ch, data) {
+    if (!fbReady) return;
+    push(ref(db_, 'sessions/' + code + '/msgs/' + ch), { ...data, ts: Date.now() });
+  },
+  saveEvents(code, evts) {
+    if (!fbReady) return;
+    set(ref(db_, 'sessions/' + code + '/events'), evts);
+  },
+  loadEvents(code, cb) {
+    if (!fbReady) return;
+    get(ref(db_, 'sessions/' + code + '/events')).then(snap => { if(snap.val()) cb(snap.val()); });
+  }
+};
+</script>
+
+<script>
+// ═══════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════
+const NN=['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+const SATB_DATA={
+  C:{S:'E5',A:'C5',T:'G4',B:'C3',n:'C — E — G'},
+  Cm:{S:'Eb5',A:'C5',T:'G4',B:'C3',n:'C — Eb — G'},
+  D:{S:'F#5',A:'D5',T:'A4',B:'D3',n:'D — F# — A'},
+  Dm:{S:'F5',A:'D5',T:'A4',B:'D3',n:'D — F — A'},
+  E:{S:'G#5',A:'E5',T:'B4',B:'E3',n:'E — G# — B'},
+  Em:{S:'G5',A:'E5',T:'B4',B:'E3',n:'E — G — B'},
+  F:{S:'A5',A:'F5',T:'C5',B:'F3',n:'F — A — C'},
+  Fm:{S:'Ab5',A:'F5',T:'C5',B:'F3',n:'F — Ab — C'},
+  G:{S:'B5',A:'G5',T:'D5',B:'G3',n:'G — B — D'},
+  Gm:{S:'Bb5',A:'G5',T:'D5',B:'G3',n:'G — Bb — D'},
+  A:{S:'C#5',A:'A4',T:'E4',B:'A2',n:'A — C# — E'},
+  Am:{S:'C5',A:'A4',T:'E4',B:'A2',n:'A — C — E'},
+  Bb:{S:'D5',A:'Bb4',T:'F4',B:'Bb2',n:'Bb — D — F'},
+  B:{S:'D#5',A:'B4',T:'F#4',B:'B2',n:'B — D# — F#'},
+  G7:{S:'F5',A:'D5',T:'B4',B:'G3',n:'G — B — D — F'},
+  C7:{S:'Bb4',A:'G4',T:'E4',B:'C3',n:'C — E — G — Bb'},
+  D7:{S:'C5',A:'A4',T:'F#4',B:'D3',n:'D — F# — A — C'},
+  F7:{S:'Eb5',A:'C5',T:'A4',B:'F3',n:'F — A — C — Eb'},
+  A7:{S:'G4',A:'E4',T:'C#4',B:'A2',n:'A — C# — E — G'},
+  E7:{S:'D5',A:'B4',T:'G#4',B:'E3',n:'E — G# — B — D'},
+};
+const CT=[['maj7',[0,4,7,11]],['min7',[0,3,7,10]],['7',[0,4,7,10]],
+  ['dim7',[0,3,6,9]],['m7b5',[0,3,6,10]],['maj',[0,4,7]],
+  ['min',[0,3,7]],['dim',[0,3,6]],['aug',[0,4,8]],
+  ['sus4',[0,5,7]],['sus2',[0,2,7]],['6',[0,4,7,9]]];
+const KP={
+  major:[6.35,2.23,3.48,2.33,4.38,4.09,2.52,5.19,2.39,3.66,2.29,2.88],
+  minor:[6.33,2.68,3.52,5.38,2.60,3.53,2.54,4.75,3.98,2.69,3.34,3.17]
+};
+const SONGS={
+  assurance:{title:"J'ai l'assurance de mon salut",key:'C',
+    secs:[
+      {lb:'Couplet 1',ch:['C','C','F','C','G','G','C','C'],ly:["J'ai l'as-","su-ran-","ce de","mon sa-","lut Par","la pré-","sen-ce du","Sei-gneur"]},
+      {lb:'Refrain',ch:['C','F','C','G7','C','F','G','C'],ly:["C'est mon","his-toi-","re c'est","là mon","chant Louer","mon sau-","veur le jour","du-rant"]},
+    ]},
+  amazing:{title:"Amazing Grace",key:'G',
+    secs:[{lb:'Couplet 1',ch:['G','G','C','G','Em','D7','G','G'],ly:["A-ma-","zing grace","how sweet","the sound","that saved","a wretch","like","me"]}]},
+  gloire:{title:"À toi la gloire",key:'C',
+    secs:[
+      {lb:'Couplet 1',ch:['C','F','C','G','Am','F','C','G','C'],ly:["À toi","la gloi-","re ô","Res-sus-","ci-té","À toi","la vic-","toi-","re"]},
+      {lb:'Refrain',ch:['F','C','G','Am','F','C','G7','C'],ly:["Vic-toi-","re à","Jé-sus","vic-toi-","re à","Jé-sus","vic-","toi-re"]},
+    ]},
+};
+const QMS={
+  p2:[
+    {t:'⚠️ Basses trop hautes',c:'qu'},{t:'🔻 Descends d\'une octave',c:'qu'},
+    {t:'📍 Suis ma tonalité',c:''},{t:'🎵 Accord actuel',c:''},
+    {t:'🔇 Baisse main gauche',c:'qu'},{t:'✅ Parfait! Continue',c:'qo'},
+    {t:'⏸️ Pause — attends',c:''},{t:'🎹 Sans basses SVP',c:'qu'},
+    {t:'🔁 Reprends depuis début',c:''},{t:'🎶 Maintiens ce rythme',c:'qo'},
+  ],
+  son:[
+    {t:'🔊 Piano trop fort retours',c:'qu'},{t:'🎤 Micro saturé — baisse',c:'qu'},
+    {t:'🎚️ Moins de réverb',c:''},{t:'📈 Monte le chorale',c:''},
+    {t:'🔉 Piano −3dB',c:''},{t:'🔉 Batterie −3dB',c:''},
+    {t:'✅ Mixage parfait!',c:'qo'},{t:'🔇 Coupez tous les micros',c:'qu'},
+    {t:'🎙️ Monte le lead vocal',c:''},{t:'🥁 Batterie trop forte retour',c:'qu'},
+  ],
+  mod:[
+    {t:'✅ Prêt — tu peux annoncer',c:'qo'},{t:'⏳ Encore 30 secondes',c:''},
+    {t:'🎵 On enchaîne directement',c:''},{t:'⏸️ Pause — attends signal',c:'qu'},
+    {t:'🔁 On reprend le refrain',c:''},{t:'🎤 À toi le micro',c:'qo'},
+    {t:'📋 Chant suivant !',c:''},{t:'🙏 Stop musique — prière',c:'qu'},
+    {t:'👥 Accueil des nouveaux',c:''},{t:'📖 Lecture biblique maintenant',c:''},
+  ],
+  past:[
+    {t:'✅ Groupe prêt',c:'qo'},{t:'🎵 Chant d\'accueil prêt',c:'qo'},
+    {t:'⏸️ On attend votre signal',c:''},{t:'🔁 On peut reprendre',c:'qo'},
+    {t:'⏭️ Chant suivant',c:''},{t:'🙏 Prêts pour la prière',c:'qo'},
+  ],
+  all:[
+    {t:'📢 Chant suivant !',c:'qu'},{t:'🎵 On reprend tous',c:'qo'},
+    {t:'⏸️ Pause générale',c:'qu'},{t:'🙏 Silence — prière',c:'qu'},
+    {t:'👋 Accueil des nouveaux',c:''},{t:'📖 Ouvrez vos Bibles',c:''},
+    {t:'⏭️ Altération de programme',c:'qu'},{t:'🎤 Micro ouvert — attention',c:''},
+  ]
+};
+
+// ── STATE ────────────────────────────────────────────────
+let SC='MLA-'+Math.floor(1000+Math.random()*9000), role='chef';
+let midiAcc=null, midiInp=null, aNotes=new Set(), recording=false;
+let progression=[], lastCh='', lastChT=0, noteTms=[], nFreq=new Map();
+let curKey=null, curChord='C', events=[], localChats={};
+let vOn=new Set(['S','A','T','B']), satbMode='satb', transSteps=0;
+let WKW=0, BKW=0; const KH=82;
+let seenMsgIds=new Set(), curSong=null;
+const RL={chef:'🎹 Chef',pianiste2:'🎼 Pianiste 2',son:'🎚️ Son',moderatrice:'🎤 Modératrice',
+  pasteur:'✝️ Pasteur',lead:'🎙️ Lead',batteur:'🥁 Batteur',bassiste:'🎸 Bassiste',
+  soprano:'🎵 Soprano',alto:'🎵 Alto',tenor:'🎵 Ténor',basse:'🎵 Basse',
+  accueil:'👋 Accueil',protocole:'📋 Protocole'};
+
+// ── UTILS ────────────────────────────────────────────────
+function alrt(m,t=''){const el=document.getElementById('AB');el.textContent=m;el.className='abn show'+(t?' '+t:'');setTimeout(()=>el.className='abn',2800);}
+function tnow(){return new Date().toLocaleTimeString('fr',{hour:'2-digit',minute:'2-digit'});}
+function fmtD(d){try{return new Date(d+'T12:00').toLocaleDateString('fr',{weekday:'long',day:'numeric',month:'long',year:'numeric'});}catch(e){return d;}}
+function esc(s){return String(s).replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function vibrate(p=[50]){try{navigator.vibrate&&navigator.vibrate(p);}catch(e){}}
+
+// ── NAV ──────────────────────────────────────────────────
+function goP(nm,btn){
+  document.querySelectorAll('.pnl').forEach(p=>p.classList.remove('ac'));
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('ac'));
+  document.getElementById('pnl-'+nm).classList.add('ac');
+  if(btn)btn.classList.add('ac');
+  if(nm==='comm')document.getElementById('nd-comm').style.display='none';
+}
+
+// ── SESSION / ROLE ───────────────────────────────────────
+function selR(b){document.querySelectorAll('.rb').forEach(x=>x.classList.remove('on'));b.classList.add('on');role=b.dataset.r;}
+function newCode(){SC='MLA-'+Math.floor(1000+Math.random()*9000);document.getElementById('CD').textContent=SC;}
+function joinSess(){
+  const v=document.getElementById('CI').value.trim().toUpperCase();
+  if(v)SC=v; else SC=document.getElementById('CD').textContent;
+  document.getElementById('OV').style.display='none';
+  document.getElementById('HC').textContent=SC;
+  document.getElementById('HD').classList.add('live');
+  document.getElementById('HR').textContent=RL[role]||role;
+  adaptUI(); updURLs(); renderQMs();
+  // Init Firebase session listener
+  const fb=window._fb;
+  if(fb&&fb.ready()){
+    fb.initSession(SC);
+    fb.loadEvents(SC, evts=>{events=Object.values(evts);renderEvs();});
+    alrt('✅ Session '+SC+' — Firebase actif','ok');
+  } else {
+    alrt('⚠️ Firebase non disponible — mode local uniquement','');
+  }
+}
+function adaptUI(){
+  // Non-chef roles see only comm + relevant panels
+  const chefPanels=['prog','satb','midi'];
+  if(role!=='chef'){
+    chefPanels.forEach(p=>{
+      const b=document.querySelector('[data-p='+p+']');
+      if(b)b.style.display='none';
+    });
+    setTimeout(()=>goP('comm',document.querySelector('[data-p=comm]')),80);
+  }
+  if(role==='pianiste2'){
+    // P2: show midi panel too
+    const b=document.querySelector('[data-p=midi]');
+    if(b)b.style.display='';
+  }
+}
+
+// ── FIREBASE CALLBACKS (called from module scope) ────────
+window._onRemoteChord = function(d){
+  if(!d||!d.name)return;
+  curChord=d.name;
+  updChordUI(d.name, d.key||null, d.bpm||null);
+  // Flash P2 display
+  const el=document.getElementById('p2S');
+  if(el){el.classList.add('on');setTimeout(()=>el.classList.remove('on'),600);}
+};
+window._onRemoteSong = function(d){
+  if(!d)return;
+  curSong=d;
+  ['curSongBar','curSongComm'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display='flex';
+  });
+  ['csTitle','cscTitle'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=d.title||'—';});
+  ['csKey','cscKey'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=d.key||'C';});
+  const tr=d.transSteps?'Transpose: '+(d.transSteps>0?'+':'')+d.transSteps:'';
+  ['csTrans','cscTrans'].forEach(id=>{const el=document.getElementById(id);if(el)el.textContent=tr;});
+  if(role!=='chef'){alrt('🎵 Chant: '+d.title+' — '+d.key,'ok');vibrate([40,30,40]);}
+};
+window._onRemoteMsg = function(ch, m){
+  if(!m||seenMsgIds.has(m.ts+m.txt))return;
+  seenMsgIds.add(m.ts+m.txt);
+  // Don't show own messages again
+  const box=document.getElementById('cb-'+ch);
+  if(box){
+    const d=document.createElement('div');
+    d.className='cm '+(m.role===role?'sent':'recv');
+    d.innerHTML=esc(m.txt)+'<div class="ct">'+esc(m.role||'')+'  '+esc(m.time||'')+'</div>';
+    box.appendChild(d);box.scrollTop=box.scrollHeight;
+  }
+  if(m.role!==role){
+    document.getElementById('nd-comm').style.display='block';
+    vibrate([60]);
+    alrt('💬 '+esc(m.txt.slice(0,35)),'');
+  }
+};
+
+// ── URLS ─────────────────────────────────────────────────
+function updURLs(){
+  const base=location.href.split('?')[0];
+  const map={p2:'pianiste2',son:'son',mod:'moderatrice'};
+  Object.entries(map).forEach(([k,r])=>{
+    const el=document.getElementById(k==='p2'?'p2URL':k+'URL');
+    if(el)el.textContent=base+'?session='+SC+'&role='+r;
+  });
+}
+function cpURL(r){
+  const url=location.href.split('?')[0]+'?session='+SC+'&role='+r;
+  navigator.clipboard.writeText(url).then(()=>alrt('📋 Lien copié !','ok'));
+}
+function shURL(r){
+  const url=location.href.split('?')[0]+'?session='+SC+'&role='+r;
+  if(navigator.share)navigator.share({title:'MLA ICC – '+r,url});else cpURL(r);
+}
+
+// ── COMM ─────────────────────────────────────────────────
+function renderQMs(){
+  Object.entries(QMS).forEach(([ch,msgs])=>{
+    const w=document.getElementById('q'+ch);if(!w)return;
+    w.innerHTML=msgs.map(m=>`<button class="qm ${m.c||''}" onclick="sendQ('${esc(m.t)}','${ch}')">${esc(m.t)}</button>`).join('');
+  });
+}
+function showCh(ch,btn){
+  ['p2','son','mod','past','all'].forEach(c=>{const el=document.getElementById('ch-'+c);if(el)el.style.display='none';});
+  document.querySelectorAll('#CT .btn').forEach(b=>b.className='btn bg_ bsm');
+  const el=document.getElementById('ch-'+ch);if(el)el.style.display='block';
+  if(btn)btn.className='btn bp bsm';
+}
+function sendQ(txt,ch){
+  // Allow editing before send
+  const edited=prompt('Message à envoyer (modifiable) :', txt);
+  if(!edited)return;
+  pushMsg(ch,edited);alrt('📤 '+edited.slice(0,35),'ok');
+}
+function sndMsg(ch){
+  const i=document.getElementById('ci-'+ch);
+  const t=(i.value||'').trim();if(!t)return;
+  pushMsg(ch,t);i.value='';
+}
+function pushMsg(ch,txt){
+  const m={role,txt,time:tnow(),ts:Date.now()};
+  // Local display
+  const box=document.getElementById('cb-'+ch);
+  if(box){
+    const d=document.createElement('div');d.className='cm sent';
+    d.innerHTML=esc(txt)+'<div class="ct">'+tnow()+'</div>';
+    box.appendChild(d);box.scrollTop=box.scrollHeight;
+  }
+  seenMsgIds.add(m.ts+m.txt);
+  // Firebase push
+  if(window._fb&&window._fb.ready())window._fb.sendMsg(SC,ch,m);
+}
+
+// ── CHORD DETECTION ──────────────────────────────────────
+function detectCh(ns){
+  if(ns.size<2)return null;
+  const cls=[...new Set([...ns].map(n=>n%12))].sort((a,b)=>a-b);
+  let best=null,bs=0;
+  for(let r=0;r<12;r++)for(const[nm,iv]of CT){
+    const need=iv.map(i=>(r+i)%12);
+    const m_=need.filter(n=>cls.includes(n)).length;
+    const s=m_/Math.max(need.length,cls.length);
+    if(s>bs&&m_>=Math.min(2,need.length)){
+      bs=s;
+      const bass=cls[0];const inv=bass!==r?'/'+NN[bass]:'';
+      best={name:NN[r]+(nm==='maj'?'':nm==='min'?'m':nm)+inv,r,bass,s};
+    }
+  }
+  return best&&bs>=0.5?best:null;
+}
+function pearson(a,b){
+  const n=a.length,ma=a.reduce((s,x)=>s+x,0)/n,mb=b.reduce((s,x)=>s+x,0)/n;
+  let num=0,da=0,db=0;
+  for(let i=0;i<n;i++){num+=(a[i]-ma)*(b[i]-mb);da+=(a[i]-ma)**2;db+=(b[i]-mb)**2;}
+  return da&&db?num/Math.sqrt(da*db):0;
+}
+function detectKey(f){
+  const fa=Array.from({length:12},(_,i)=>f.get(i)||0);
+  if(fa.reduce((a,b)=>a+b,0)<5)return null;
+  let best=null,bc=-Infinity;
+  for(let r=0;r<12;r++)for(const[mode,p]of Object.entries(KP)){
+    const rot=Array.from({length:12},(_,i)=>p[(i-r+12)%12]);
+    const c=pearson(fa,rot);if(c>bc){bc=c;best={r,mode,name:NN[r]+(mode==='major'?' Maj':' min'),c};}
+  }
+  return best;
+}
+function estBPM(){
+  if(noteTms.length<4)return null;
+  const rec=noteTms.slice(-16),diffs=[];
+  for(let i=1;i<rec.length;i++)diffs.push(rec[i]-rec[i-1]);
+  const med=[...diffs].sort((a,b)=>a-b)[Math.floor(diffs.length/2)];
+  const fil=diffs.filter(d=>d>0.1*med&&d<5*med);
+  return fil.length<2?null:Math.round(60000/(fil.reduce((a,b)=>a+b,0)/fil.length));
+}
+
+// ── CHORD UI ─────────────────────────────────────────────
+function updChordUI(chName, keyOverride, bpmOverride){
+  curChord=chName;
+  const al=SATB_DATA[chName]||SATB_DATA[chName.replace('m','')]||null;
+  const sub=al?al.n:chName;
+  const bassNote=al?al.B:'—';
+  const keyStr=keyOverride||(curKey?curKey.name:'—');
+  const bpmStr=bpmOverride||(document.getElementById('mBpm').textContent!=='—'?document.getElementById('mBpm').textContent+'♩':'—');
+
+  // MIDI panel
+  const cs=document.getElementById('mCS');if(cs)cs.classList.add('on');
+  setText('mCM',chName); setText('mCSS',sub);
+  setText('mBass','Basse : '+bassNote); setText('mKeyLine',keyStr);
+
+  // P2 display in comm panel
+  setText('p2M',chName); setText('p2SS',sub);
+  setText('p2Bass','Basse : '+bassNote); setText('p2Key',keyStr);
+
+  // SATB panel chord
+  setText('sChn',chName); setText('sChs',sub);
+  const vn=document.getElementById('sVN');
+  if(vn&&al)vn.innerHTML=['S','A','T','B'].map(v=>`<span class="tag t${v.toLowerCase()}">${v}: ${al[v]}</span>`).join('');
+}
+function setText(id,val){const el=document.getElementById(id);if(el)el.textContent=val;}
+
+// ── MIDI ─────────────────────────────────────────────────
+async function initMIDI(){
+  if(!navigator.requestMIDIAccess){alrt('WebMIDI non supporté — utilise Chrome sur PC','err');return;}
+  try{
+    midiAcc=await navigator.requestMIDIAccess({sysex:false});
+    const sel=document.getElementById('mPort');
+    sel.innerHTML='<option>Sélectionner…</option>';
+    for(const[id,i] of midiAcc.inputs){
+      const o=document.createElement('option');o.value=id;o.textContent=i.name;sel.appendChild(o);
+    }
+    if(midiAcc.inputs.size===1){const id=[...midiAcc.inputs.keys()][0];sel.value=id;connectPort(id);}
+    sel.onchange=()=>connectPort(sel.value);
+    midiAcc.onstatechange=()=>initMIDI();
+    document.getElementById('mSt').textContent=midiAcc.inputs.size+' port(s)';
+    document.getElementById('mDot').classList.add('live');
+  }catch(e){alrt('Accès MIDI refusé','err');}
+}
+function connectPort(id){
+  if(midiInp)midiInp.onmidimessage=null;
+  midiInp=midiAcc&&midiAcc.inputs.get(id);
+  if(midiInp){midiInp.onmidimessage=onMIDI;document.getElementById('mSt').textContent=midiInp.name;alrt('🎹 '+midiInp.name+' connecté','ok');}
+}
+let mUT=null;
+function onMIDI(e){
+  const[st,note,vel]=e.data,cmd=st&0xf0;
+  if(cmd===0x90&&vel>0){
+    aNotes.add(note);noteTms.push(Date.now());if(noteTms.length>48)noteTms.shift();
+    if(recording){const nc=note%12;nFreq.set(nc,(nFreq.get(nc)||0)+1);}
+  }else if(cmd===0x80||(cmd===0x90&&vel===0)){aNotes.delete(note);}
+  drawPiano();
+  document.getElementById('mN').textContent=aNotes.size;
+  const ch=detectCh(aNotes);
+  if(ch){
+    const now=Date.now();
+    if(ch.name!==lastCh&&now-lastChT>250){
+      lastCh=ch.name;lastChT=now;curChord=ch.name;
+      updChordUI(ch.name);
+      if(recording){progression.push({n:ch.name,t:now});renderProg();}
+      // Auto-broadcast to Firebase
+      if(window._fb&&window._fb.ready()){
+        const bpm=estBPM();
+        window._fb.sendChord(SC,{name:ch.name,key:curKey?curKey.name:'—',bpm:bpm||null,role});
+      }
+    }
+  }else if(aNotes.size===0){
+    const cs=document.getElementById('mCS');if(cs)cs.classList.remove('on');
+    setText('mCM','—');setText('mCSS','En attente de notes…');
+    setText('mBass','');setText('mKeyLine','');
+  }
+  clearTimeout(mUT);
+  mUT=setTimeout(()=>{
+    const bpm=estBPM();if(bpm)document.getElementById('mBpm').textContent=bpm;
+    if(recording&&nFreq.size>=3){const k=detectKey(nFreq);if(k){curKey=k;document.getElementById('mK').textContent=k.name;}}
+  },400);
+}
+function togRec(){
+  recording=!recording;const btn=document.getElementById('recBtn');
+  if(recording){btn.textContent='⏸ Pause';btn.className='btn bd_ bsm';
+    progression=[];nFreq=new Map();curKey=null;
+    document.getElementById('mK').textContent='—';renderProg();}
+  else{btn.textContent='▶ Play';btn.className='btn ba bsm';}
+}
+function resetMIDI(){
+  recording=false;progression=[];nFreq=new Map();curKey=null;noteTms=[];aNotes=new Set();lastCh='';
+  ['mK','mBpm'].forEach(id=>document.getElementById(id).textContent='—');
+  document.getElementById('mN').textContent='0';
+  document.getElementById('recBtn').textContent='▶ Play';
+  document.getElementById('recBtn').className='btn ba bsm';
+  const cs=document.getElementById('mCS');if(cs)cs.classList.remove('on');
+  setText('mCM','—');setText('mCSS','En attente de notes…');
+  setText('mBass','');setText('mKeyLine','');
+  renderProg();drawPiano();
+}
+function broadcastCh(){
+  const bpm=estBPM();
+  if(window._fb&&window._fb.ready()){
+    window._fb.sendChord(SC,{name:curChord,key:curKey?curKey.name:'—',bpm:bpm||null,role});
+    document.getElementById('bSt').textContent='📡 '+curChord+' diffusé';
+    document.getElementById('bSt').className='tag tg';
+    alrt('📡 Accord '+curChord+' diffusé au Pianiste 2','ok');
+  } else {
+    alrt('Firebase non disponible','err');
+  }
+}
+function renderProg(){
+  const row=document.getElementById('pRow');
+  document.getElementById('pCnt').textContent=progression.length+' accord'+(progression.length>1?'s':'');
+  if(!progression.length){row.innerHTML='<span style="color:var(--t3);font-size:.78rem;">Appuie sur Play pour enregistrer</span>';return;}
+  row.innerHTML='';
+  progression.forEach((p,i)=>{
+    const d=document.createElement('div');d.className='pp'+(i===progression.length-1?' cur':'');
+    d.innerHTML=`<span class="ppn">${esc(p.n)}</span>`;
+    row.appendChild(d);
+  });
+  row.scrollLeft=row.scrollWidth;
+}
+
+// ── PIANO CANVAS ─────────────────────────────────────────
+const cv=document.getElementById('PC');const ct2=cv.getContext('2d');
+const FIRST=21,LAST=108;
+function rsz(){
+  const w=Math.min(cv.parentElement.offsetWidth-12,760);
+  cv.width=w;cv.height=KH;WKW=w/52;BKW=WKW*.57;drawPiano();
+}
+function isBk(m){return[1,4,6,9,11].includes((m-21)%12);}
+function wIdx(m){let c=0;for(let n=FIRST;n<=m;n++)if(!isBk(n))c++;return c-1;}
+function bkX(m){return(wIdx(m-1)+.67)*WKW;}
+function drawPiano(){
+  if(!WKW)rsz();
+  ct2.clearRect(0,0,cv.width,KH);
+  for(let m=FIRST;m<=LAST;m++){
+    if(isBk(m))continue;
+    const x=wIdx(m)*WKW,on=aNotes.has(m);
+    ct2.fillStyle=on?'#7c6af7':'#eeeeff';ct2.strokeStyle='#1a1a26';ct2.lineWidth=.5;
+    ct2.beginPath();ct2.roundRect(x+.5,.5,WKW-1,KH-1,[0,0,3,3]);ct2.fill();ct2.stroke();
+    if(on){ct2.fillStyle='rgba(255,255,255,.2)';ct2.fillRect(x+1,1,WKW-2,9);}
+  }
+  for(let m=FIRST;m<=LAST;m++){
+    if(!isBk(m))continue;
+    const x=bkX(m),on=aNotes.has(m);
+    ct2.fillStyle=on?'#b094fc':'#1a1a26';ct2.strokeStyle=on?'#7c6af7':'#333';ct2.lineWidth=.5;
+    ct2.beginPath();ct2.roundRect(x-BKW/2+.5,.5,BKW-1,KH*.62-1,[0,0,2,2]);ct2.fill();ct2.stroke();
+  }
+}
+window.addEventListener('resize',rsz);
+
+// ── SATB SHEET ───────────────────────────────────────────
+function togV(v){
+  const c=document.querySelector('.vc[data-v='+v+']');
+  if(vOn.has(v)){vOn.delete(v);c.classList.remove('on');}else{vOn.add(v);c.classList.add('on');}
+  buildSheet();
+}
+function swMode(m){
+  satbMode=m;
+  document.getElementById('swAccord').className='btn '+(m==='accord'?'bp':'bg_')+' bsm';
+  document.getElementById('swSatb').className='btn '+(m==='satb'?'bp':'bg_')+' bsm';
+  buildSheet();
+}
+const TRANS_NAMES=['C','C# / Db','D','D# / Eb','E','F','F# / Gb','G','G# / Ab','A','A# / Bb','B'];
+function adjTrans(d){
+  transSteps=((transSteps+d)+12)%12;
+  const note=TRANS_NAMES[transSteps];
+  const dir=transSteps<=6?'+'+transSteps:(transSteps-12);
+  document.getElementById('transDisplay').textContent=
+    (transSteps===0?'0 (Do)':dir+' → '+note);
+  buildSheet();
+}
+function transposeChord(ch, steps){
+  if(!steps)return ch;
+  // Simple transpose: find root note, shift
+  const roots=NN;
+  for(let len=2;len>=1;len--){
+    const root=ch.slice(0,len);
+    const idx=roots.indexOf(root);
+    if(idx>-1){
+      const newRoot=roots[(idx+steps)%12];
+      return newRoot+ch.slice(len);
+    }
+  }
+  return ch;
+}
+function loadLib(){
+  const k=document.getElementById('sLib').value;if(!k)return;
+  const s=SONGS[k];if(!s)return;
+  document.getElementById('sT').value=s.title;
+  document.getElementById('sIn').value=s.secs.map(sc=>sc.lb+': '+sc.ch.join(' ')).join(' | ');
+  document.getElementById('sLy').value=s.secs.map(sc=>sc.ly.join(' ')).join(' | ');
+  buildSheet();
+}
+function buildSheet(){
+  const raw=document.getElementById('sIn').value.trim();
+  const lyr=document.getElementById('sLy').value.trim();
+  if(!raw){document.getElementById('sSheet').style.display='none';return;}
+  const secs=raw.split('|').map(pt=>{
+    pt=pt.trim();const ci=pt.indexOf(':');
+    let lb='Section',chs=[];
+    if(ci>-1){lb=pt.slice(0,ci).trim();chs=pt.slice(ci+1).trim().split(/\s+/).filter(Boolean);}
+    else chs=pt.split(/\s+/).filter(Boolean);
+    return{lb,chs:chs.map(c=>transposeChord(c,transSteps))};
+  });
+  const lyrParts=lyr?lyr.split('|').map(p=>p.trim().split(/\s+/).filter(Boolean)):[];
+  let html='';
+  secs.forEach((sec,si)=>{
+    html+=`<div class="ssec"><div class="ssecl">${esc(sec.lb)}</div>`;
+    // chord row always
+    html+=`<div class="schrow">${sec.chs.map(ch=>`<div class="sch">${esc(ch)}</div>`).join('')}</div>`;
+    if(satbMode==='satb'){
+      ['S','A','T','B'].forEach(v=>{
+        if(!vOn.has(v))return;
+        html+=`<div class="svrow"><div class="svl_ ${v}">${v}</div>`;
+        sec.chs.forEach(ch=>{
+          const al=SATB_DATA[ch]||SATB_DATA[ch.replace('m','')]||null;
+          html+=`<div class="svc ${v}">${esc(al?al[v]:'—')}</div>`;
+        });
+        html+=`</div>`;
+      });
+    }
+    const lp=lyrParts[si]||[];
+    if(lp.length)html+=`<div class="slrow">${sec.chs.map((_,ci)=>`<div class="sly">${esc(lp[ci]||'')}</div>`).join('')}</div>`;
+    html+=`</div>`;
+  });
+  const sh=document.getElementById('sSheet');sh.innerHTML=html;sh.style.display='block';
+}
+function announceChant(){
+  const title=document.getElementById('sT').value||'—';
+  const key=(document.getElementById('sIn').value.match(/[A-G][#b]?m?/)||['C'])[0];
+  const data={title,key,transSteps,role};
+  if(window._fb&&window._fb.ready()){
+    window._fb.sendSong(SC,data);
+    alrt('📢 Chant annoncé à tous : '+title,'ok');
+  }
+  window._onRemoteSong(data);
+}
+
+// ── PROGRAMME ────────────────────────────────────────────
+const TL={culte:'Culte',veillee:'🙏 Veillée',jeunes:'👦 Jeunes',evang:'📢 Évangélisation',special:'⭐ Spécial'};
+const TC={culte:'tp',veillee:'tg',jeunes:'ta',evang:'tr',special:'tb'};
+function togEF(){const f=document.getElementById('EF');f.style.display=f.style.display==='none'?'block':'none';}
+function saveEv(){
+  const d=document.getElementById('eD').value;if(!d){alrt('Sélectionne une date','err');return;}
+  const ev={id:Date.now(),date:d,type:document.getElementById('eT').value,
+    theme:document.getElementById('eTh').value,salle:document.getElementById('eSa').value,
+    heure:document.getElementById('eH').value,cond:document.getElementById('eCo').value,
+    ref_:document.getElementById('eRe').value,roles:document.getElementById('eRo').value,songs:[]};
+  events.push(ev);events.sort((a,b)=>a.date.localeCompare(b.date));
+  renderEvs();togEF();
+  if(window._fb&&window._fb.ready())window._fb.saveEvents(SC,events);
+  alrt('✅ Enregistré','ok');
+}
+function addSong(eid){
+  const n=prompt('Titre du chant :');if(!n)return;
+  const k=prompt('Tonalité (C, Am, G…) :')||'C';
+  const b=prompt('BPM (optionnel) :')||'';
+  const ev=events.find(e=>e.id===eid);
+  if(ev){ev.songs.push({id:Date.now(),name:n,key:k,bpm:b});renderEvs();
+    if(window._fb&&window._fb.ready())window._fb.saveEvents(SC,events);}
+}
+function delEv(id){if(confirm('Supprimer ?')){events=events.filter(e=>e.id!==id);renderEvs();if(window._fb&&window._fb.ready())window._fb.saveEvents(SC,events);}}
+function delSong(eid,sid){const ev=events.find(e=>e.id===eid);if(ev){ev.songs=ev.songs.filter(s=>s.id!==sid);renderEvs();if(window._fb&&window._fb.ready())window._fb.saveEvents(SC,events);}}
+function renderEvs(){
+  const c=document.getElementById('EL');
+  if(!events.length){c.innerHTML='<div class="empty">📅 Aucun programme. Crée une date.</div>';return;}
+  c.innerHTML=events.map(ev=>`
+    <div class="pev">
+      <div class="pehd">
+        <div><div class="pedt">${fmtD(ev.date)}${ev.heure?' · '+ev.heure:''}</div>
+          <div class="peth">${esc(ev.theme||'')}</div></div>
+        <div class="row" style="gap:4px;flex-shrink:0;">
+          <button class="btn bg_ bsm" onclick="addSong(${ev.id})">+ Chant</button>
+          <button class="btn bsm" style="background:transparent;color:var(--t3);border:none;" onclick="delEv(${ev.id})">✕</button>
+        </div>
+      </div>
+      <div class="pemeta">
+        <span class="tag ${TC[ev.type]||'tp'}">${TL[ev.type]||ev.type}</span>
+        ${ev.salle?`<span class="tag tb">📍 ${esc(ev.salle)}</span>`:''}
+        ${ev.cond?`<span class="tag tg">👤 ${esc(ev.cond)}</span>`:''}
+        ${ev.ref_?`<span class="tag ta">📖 ${esc(ev.ref_)}</span>`:''}
+      </div>
+      ${ev.roles?`<div style="font-size:.7rem;color:var(--t2);margin-bottom:7px;padding:4px 9px;background:var(--s2);border-radius:var(--r);">👥 ${esc(ev.roles)}</div>`:''}
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        ${ev.songs.length===0?'<div style="color:var(--t3);font-size:.78rem;">Aucun chant ajouté</div>':''}
+        ${ev.songs.map((s,i)=>`
+          <div class="srow">
+            <div class="snum">${i+1}</div>
+            <div class="sinfo"><div class="sname">${esc(s.name)}</div>
+              <div class="smeta"><span class="tag tp">${esc(s.key)}</span>${s.bpm?`<span class="tag ta">${esc(s.bpm)} BPM</span>`:''}</div>
+            </div>
+            <div class="row" style="gap:3px;">
+              <button class="btn bg_ bsm" onclick="updChordUI('${esc(s.key)}')">🎵</button>
+              <button class="btn bsm" style="background:transparent;color:var(--t3);border:none;" onclick="delSong(${ev.id},${s.id})">✕</button>
+            </div>
+          </div>`).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ── INIT ─────────────────────────────────────────────────
+newCode();
+rsz();
+renderQMs();
+showCh('p2',document.querySelector('#CT .btn'));
+// Auto-join via URL params
+(()=>{
+  const p=new URLSearchParams(location.search);
+  const s=p.get('session'),r=p.get('role');
+  if(s&&r){
+    SC=s;role=r;
+    document.getElementById('CD').textContent=s;
+    document.querySelectorAll('.rb').forEach(b=>b.classList.toggle('on',b.dataset.r===r));
+    joinSess();
+  }
+})();
+</script>
+</body>
+</html>
